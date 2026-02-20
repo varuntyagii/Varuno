@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* tailwind.css or global.css */
+.input-field {
+  @apply w-full h-[45px] rounded-xl bg-slate-700 border-2 border-transparent
+  px-4 text-white placeholder:text-gray-300
+  focus:outline-none focus:border-sky-400 transition;
+}
