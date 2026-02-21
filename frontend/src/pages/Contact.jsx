@@ -18,7 +18,7 @@ const Contact = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const mailtoLink = `mailto:support@varuno.qzz.io?subject=${encodeURIComponent(
+    const mailtoLink = `mailto:varuntyagi0099@gmail.com?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(
       `Name: ${name}\nEmail: ${email}\n\n${message}`
