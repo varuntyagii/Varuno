@@ -1139,21 +1139,21 @@ const Login = () => {
             <div className="flex justify-center gap-3.5 my-2">
               <button
                 type="button"
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-900 hover:bg-gray-800 border border-gray-700 transition-colors"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-900 hover:bg-gray-800 border border-gray-700 transition-colors" onClick={githubLogin}
               >
                 <FaGithub className="text-lg" />
               </button>
 
               <button
                 type="button"
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-[#0A66C2] hover:bg-[#084d99] transition-colors"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-[#0A66C2] hover:bg-[#084d99] transition-colors" onClick={handleLoginLinkedin}
               >
                 <FaLinkedinIn className="text-lg" />
               </button>
 
               <button
                 type="button"
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1877F2] hover:bg-[#166fe5] transition-colors"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1877F2] hover:bg-[#166fe5] transition-colors" onClick={facebookLogin}
               >
                 <FaFacebookF className="text-lg" />
               </button>
@@ -1162,7 +1162,7 @@ const Login = () => {
                 type="button"
                 className="w-10 h-10 flex items-center justify-center rounded-full bg-[#0078D4] hover:bg-[#005ba1] transition-colors"
               >
-                <img src={microsoftLogo} alt="Microsoft" className="w-5 h-5" />
+                <img src={microsoftLogo} alt="Microsoft" className="w-5 h-5" onClick={handleLoginMicrosoft} />
               </button>
             </div>
 

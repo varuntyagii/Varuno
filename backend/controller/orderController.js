@@ -503,15 +503,67 @@ export const verifyRazorpay = async (req, res) => {
 
 
 
+// export const placeOrderStripe = async (req, res) => {
+//   try {
+//     const { items, amount, address } = req.body;
+//     const userId = req.userId;
+
+//     // Create order in database FIRST
+//     const newOrder = await Order.create({
+//       items,
+//       amount,
+//       userId,
+//       address,
+//       paymentMethod: "Stripe",
+//       payment: false,
+//       date: Date.now(),
+//     });
+
+//     // Create Stripe session
+//     const session = await stripe.checkout.sessions.create({
+//       payment_method_types: ['card'],
+//       line_items: [{
+//         price_data: {
+//           currency: "inr",
+//           product_data: {
+//             name: `Order #${newOrder._id.toString().slice(-6)}`,
+//             images: items[0]?.image ? [items[0].image[0]] : [],
+//           },
+//           unit_amount: Math.round(amount * 100),
+//         },
+//         quantity: 1,
+//       }],
+//       mode: 'payment',
+// success_url: `${process.env.FRONTEND_URL}/success?order_id=${newOrder._id}`,
+//       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+//       metadata: {
+//         orderId: newOrder._id.toString()
+//       }
+//     });
+
+//     res.json({ success: true, url: session.url, orderId: newOrder._id });
+//   } catch (error) {
+//     console.log("Stripe Error:", error);
+//     res.status(500).json({ success: false, error: error.message });
+//   }
+// }
+
+
 export const placeOrderStripe = async (req, res) => {
   try {
-    const { items, amount, address } = req.body;
+    const { items, address } = req.body;
     const userId = req.userId;
 
-    // Create order in database FIRST
+    // 1️⃣ Calculate subtotal and GST
+    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const gst = subtotal * 0.18;
+    const totalAmount = subtotal + gst;
+    const totalAmountInPaisa = Math.round(totalAmount * 100);
+
+    // 2️⃣ Create order in DB
     const newOrder = await Order.create({
       items,
-      amount,
+      amount: totalAmount, // store amount with GST
       userId,
       address,
       paymentMethod: "Stripe",
@@ -519,26 +571,25 @@ export const placeOrderStripe = async (req, res) => {
       date: Date.now(),
     });
 
-    // Create Stripe session
+    // 3️⃣ Stripe checkout session
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [{
+      payment_method_types: ["card"],
+      line_items: items.map(item => ({
         price_data: {
-          currency: "usd",
-          product_data: {
+          currency: "inr",
+                   product_data: {
             name: `Order #${newOrder._id.toString().slice(-6)}`,
             images: items[0]?.image ? [items[0].image[0]] : [],
           },
-          unit_amount: Math.round(amount * 100),
+          // Amount per item + GST distributed proportionally
+          unit_amount: Math.round((item.price + item.price * 0.18) * 100),
         },
-        quantity: 1,
-      }],
-      mode: 'payment',
-      success_url: `http://localhost:5173/success?order_id=${newOrder._id}`,
-      cancel_url: `http://localhost:5173/cancel`,
-      metadata: {
-        orderId: newOrder._id.toString()
-      }
+        quantity: item.quantity,
+      })),
+      mode: "payment",
+      success_url: `${process.env.FRONTEND_URL}/success?order_id=${newOrder._id}`,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+      metadata: { orderId: newOrder._id.toString() },
     });
 
     res.json({ success: true, url: session.url, orderId: newOrder._id });
@@ -546,4 +597,50 @@ export const placeOrderStripe = async (req, res) => {
     console.log("Stripe Error:", error);
     res.status(500).json({ success: false, error: error.message });
   }
-}
+};
+// export const placeOrderStripe = async (req, res) => {
+//   try {
+//     const { items, address } = req.body;
+//     const userId = req.userId; // must come from verified JWT
+
+//     // ✅ Calculate amount on backend
+//     const amount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+//     const totalAmount = Math.round(amount * 100); // Stripe expects cents
+
+//     // ✅ Create order in DB
+//     const newOrder = await Order.create({
+//       items,
+//       amount,
+//       userId,
+//       address,
+//       paymentMethod: "Stripe",
+//       payment: false,
+//       date: Date.now(),
+//     });
+
+//     // ✅ Create Stripe checkout session with all items
+//     const session = await stripe.checkout.sessions.create({
+//       payment_method_types: ["card"],
+//       line_items: items.map(item => ({
+//         price_data: {
+//           currency: "usd",
+//           product_data: {
+//             name: item.name,
+//             images: [item.imageUrl], // must be absolute URL
+//           },
+//           unit_amount: Math.round(item.price * 100),
+//         },
+//         quantity: item.quantity,
+//       })),
+//       mode: "payment",
+//       success_url: `${process.env.FRONTEND_URL}/success?order_id=${newOrder._id}`,
+//       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+//       metadata: { orderId: newOrder._id.toString() },
+//     });
+
+//     res.json({ success: true, url: session.url, orderId: newOrder._id });
+//   } catch (error) {
+//     console.log("Stripe Error:", error);
+//     res.status(500).json({ success: false, error: error.message });
+//   }
+// };

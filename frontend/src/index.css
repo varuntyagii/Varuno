@@ -107,3 +107,8 @@ body {
     opacity: 0;
   }
 }
+
+button, img, .interactive, .lottie {
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
+}

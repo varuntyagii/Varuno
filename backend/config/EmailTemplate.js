@@ -145,3 +145,5 @@ export const welcomeEmail = (name) => {
 </html>
   `;
 };
+
+

@@ -41,8 +41,10 @@
 //   });
 
 
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
+
 import connectDb from "./config/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -55,7 +57,6 @@ import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import newsletterRoutes from "./routes/newsletterRoutes.js";
 
-dotenv.config();
 const port = process.env.PORT || 6000;
 
 const app = express();
@@ -92,7 +93,7 @@ app.get("/api/product/list", listProduct);
 app.use("/api/cart", cartRoutes);
 app.use("/api/order", orderRoutes);
 
-  
+
 
 // connect to DB
 connectDb();

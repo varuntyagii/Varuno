@@ -249,6 +249,8 @@ export const resendOtp = async (req, res) => {
   }
 };
 
+
+
 export const logOut = async (req, res) => {
   try {
     res.clearCookie('token');

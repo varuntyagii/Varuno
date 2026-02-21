@@ -763,19 +763,19 @@ const Registration = () => {
             <div className="flex justify-center gap-3 my-2">
               <button
                 type="button"
-                className="w-10 h-10 rounded-full bg-gray-900 hover:bg-gray-800 border border-gray-700 flex items-center justify-center transition"
+                className="w-10 h-10 rounded-full bg-gray-900 hover:bg-gray-800 border border-gray-700 flex items-center justify-center transition"  onClick={githubLogin}
               >
                 <FaGithub className="text-lg" />
               </button>
               <button
                 type="button"
-                className="w-10 h-10 rounded-full bg-[#0A66C2] hover:bg-[#084d99] flex items-center justify-center transition"
+                className="w-10 h-10 rounded-full bg-[#0A66C2] hover:bg-[#084d99] flex items-center justify-center transition " onClick={handleLoginLinkedin}
               >
                 <FaLinkedinIn className="text-lg" />
               </button>
               <button
                 type="button"
-                className="w-10 h-10 rounded-full bg-[#1877F2] hover:bg-[#166fe5] flex items-center justify-center transition"
+                className="w-10 h-10 rounded-full bg-[#1877F2] hover:bg-[#166fe5] flex items-center justify-center transition" onClick={facebookLogin}
               >
                 <FaFacebookF className="text-lg" />
               </button>
@@ -784,7 +784,7 @@ const Registration = () => {
                 onClick={handleLoginMicrosoft}
                 className="w-10 h-10 rounded-full bg-[#0078D4] hover:bg-[#005ba1] flex items-center justify-center transition"
               >
-                <img src={microsoftLogo} alt="Microsoft" className="w-5 h-5" />
+                <img src={microsoftLogo} alt="Microsoft" className="w-5 h-5" onClick={handleLoginMicrosoft} />
               </button>
             </div>
 

@@ -1,12 +1,20 @@
+// Source - https://stackoverflow.com/a/66772419
+// Posted by Alex
+// Retrieved 2026-02-21, License - CC BY-SA 4.0
+
+import dotenv from "dotenv";
+
+dotenv.config();
+
 import nodemailer from 'nodemailer'
 
 export const transporter = nodemailer.createTransport({
-  host: "smtp.zoho.in", // Zoho SMTP host
-  port: 587,             // TLS port
-  secure: false,         // true for 465, false for 587
+  host: "smtp.zoho.in",
+  port: 587,
+  secure: false,
   auth: {
-    user: "support@varuno.qzz.io", // your Zoho email
-    pass: "xSPN9Hc0cdtB"
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
 });
 

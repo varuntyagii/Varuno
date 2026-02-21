@@ -3,6 +3,7 @@ import {
     adminLogin,
     adminLogOut,
 
+
     facebookLogin,
     githubLogin,
     googleLogin,
@@ -30,6 +31,7 @@ authRoutes.post("/facebookLogin", facebookLogin);
 authRoutes.post("/githubLogin", githubLogin);
 authRoutes.get("/linkedin/callback", linkedinLogin);
 authRoutes.post("/microsoftLogin", microsoftLogin);
+
 // authRoutes.get("/discord/callback", discordCallback);  // legacy direct OAuth2
 // authRoutes.post("/discordLogin", discordLogin);         // Supabase Discord login
 

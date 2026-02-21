@@ -1,5 +1,5 @@
 import { transporter } from "./Email.config.js";
-import { verificationEmail, welcomeEmail } from "../config/EmailTemplate.js";
+import {  verificationEmail, welcomeEmail, } from "../config/EmailTemplate.js";
 
 export const otpSender = async (email, otp) => {
   return transporter.sendMail({
@@ -20,3 +20,4 @@ export const SendEmail = async (email, name) => {
     html: welcomeEmail(name),
   });
 };
+
