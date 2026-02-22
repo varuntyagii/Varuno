@@ -8,13 +8,16 @@ dotenv.config();
 
 import nodemailer from 'nodemailer'
 
+const smtpUser = (process.env.SMTP_USER || "").replace(/"/g, "").trim();
+const smtpPass = (process.env.SMTP_PASS || "").replace(/"/g, "").trim();
+
 export const transporter = nodemailer.createTransport({
   host: "smtp.zoho.in",
-  port: 587,
+  port: process.env.SMTP_PORT,
   secure: false,
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    user: smtpUser,
+    pass: smtpPass,
   },
 });
 

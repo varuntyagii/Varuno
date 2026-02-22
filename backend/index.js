@@ -56,6 +56,7 @@ import { listProduct } from "./controller/productController.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import newsletterRoutes from "./routes/newsletterRoutes.js";
+import emailRoute from "./routes/emailRoute.js";
 
 const port = process.env.PORT || 6000;
 
@@ -92,6 +93,7 @@ app.get("/api/product/list", listProduct);
 
 app.use("/api/cart", cartRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api", emailRoute);
 
 
 
