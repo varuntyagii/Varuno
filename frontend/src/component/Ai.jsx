@@ -132,7 +132,7 @@ const Ai = () => {
         setActive(true);
       }}
     >
-      <div className="absolute inset-0 bg-gray-600/50 rounded-full blur-lg" />
+      <div className="absolute inset-0 bg-gray-600/50 rounded-full blur-lg " />
 
       <Lottie
         animationData={AI}

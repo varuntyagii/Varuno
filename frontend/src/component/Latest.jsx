@@ -12,7 +12,7 @@ const Latest = () => {
 
   return (
     <section className="w-full text-center -mt-70 md:-mt-70 px-4 relative z-10">
-      <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 max-w-4xl mx-auto shadow-lg border border-white/10 mb-10">
+      <div className=" p-8 max-w-4xl mx-auto shadow-2xl  mb-10">
         <Title text1="Latest" text2="Collections" />
 
         <p className="mt-4 max-w-2xl mx-auto text-sm md:text-lg text-blue-100 font-light tracking-wide">

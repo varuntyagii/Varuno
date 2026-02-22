@@ -709,75 +709,63 @@ const Nav = () => {
         </div>
       )}
 
-      {/* show profile */}
-      {showProfile && (
-        <div
-          className="
-        absolute top-[70px] right-4
-        w-[220px]
-        rounded-xl
-        bg-[#1f1f1f]
-        border border-white/10
-        shadow-2xl
-        z-50
-        animate-scaleIn">
-          <ul className="flex flex-col py-2 text-sm text-white">
-            {!userData && (
-              <li
-                className="
-              px-4 py-3
-              cursor-pointer
-              hover:bg-white/10
-              transition-colors
-            "
-                onClick={() => {
-                  setShowProfile(false);
-                  navigate("/login");
-                }}
-              >
-                Login
-              </li>
-            )}
+    {showProfile && (
+  <div className="absolute top-[70px] right-4 w-56 bg-[#1f1f1f] rounded-lg border border-gray-700 shadow-xl z-50 overflow-hidden">
+    <div className="py-1.5 text-sm text-gray-200">
+      {userData && (
+        <div className="px-4 py-3 border-b border-gray-800">
+          <p className="font-medium">{userData.name || 'User'}</p>
+          <p className="text-xs text-gray-400">{userData.email}</p>
+        </div>
+      )}
 
-            {userData && (
-              <li
-                className="
-              px-4 py-3
-              cursor-pointer
-              hover:bg-red-500/20
-              text-red-400
-              transition-colors
-            "
-                onClick={() => {
-                  handleLogout();
-                  setShowProfile(false);
-                  navigate("/");
-                }}
-              >
-                Logout
-              </li>
-            )}
-
-            <div className="my-1 h-[1px] bg-white/10" />
-
-            <li className="px-4 py-3 cursor-pointer hover:bg-white/10 transition-colors" onClick={() => {
-
+      <ul>
+        {!userData ? (
+          <li
+            className="px-4 py-2.5 hover:bg-gray-800 cursor-pointer"
+            onClick={() => {
               setShowProfile(false);
-              navigate("/order");
-            }} >
+              navigate("/login");
+            }}
+          >
+            Login
+          </li>
+        ) : (
+          <>
+            <li
+              className="px-4 py-2.5 hover:bg-gray-800 cursor-pointer"
+              onClick={() => {
+                setShowProfile(false);
+                navigate("/order");
+              }}
+            >
               Orders
             </li>
-
-            <li className="px-4 py-3 cursor-pointer hover:bg-white/10 transition-colors"
+            <li
+              className="px-4 py-2.5 hover:bg-gray-800 cursor-pointer"
               onClick={() => {
                 setShowProfile(false);
                 navigate("/about");
-              }}>
+              }}
+            >
               About
             </li>
-          </ul>
-        </div>
-      )}
+            <li
+              className="px-4 py-2.5 text-red-400 hover:bg-red-900/40 cursor-pointer border-t border-gray-800"
+              onClick={() => {
+                handleLogout();
+                setShowProfile(false);
+                navigate("/");
+              }}
+            >
+              Logout
+            </li>
+          </>
+        )}
+      </ul>
+    </div>
+  </div>
+)}
 
       {/* Mobile Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 md:hidden">

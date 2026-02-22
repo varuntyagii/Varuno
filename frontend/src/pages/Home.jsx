@@ -9,6 +9,7 @@ import NewLetter from "../component/NewLetter";
 import Footer from "./Footer";
 import { DragCards } from "./DragCards";
 import HeroSection from "./HeroSection";
+import { RevealBento } from "./RevealBento";
 
 
 const Home = () => {
@@ -33,8 +34,9 @@ const Home = () => {
 
         {/* <Page/> */}
         <OurPolicy />
-        <NewLetter />
+        {/* <NewLetter /> */}
       </section>
+      <RevealBento/>
       <DragCards />
 
       <Footer />

@@ -903,7 +903,7 @@ const Order = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 px-4 py-10">
+    <div className="min-h-screen bg-gray-900 px-4 py-10 ">
       <div className="max-w-4xl mx-auto mt-16">
         <Title text1="MY" text2="ORDERS" />
         

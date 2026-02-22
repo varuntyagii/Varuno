@@ -234,6 +234,7 @@ import LinkedInSuccess from './pages/LinkedInSuccess';
 import Success from './pages/Success';
 import Cancel from './pages/Cancel';
 import { ReactLenis } from 'lenis/react';
+import FAQPage from './pages/FAQPage';
 
 const App = () => {
   const { userData, loading } = useContext(userDataContext);
@@ -335,6 +336,10 @@ const App = () => {
           <Route
             path="/order"
             element={userData && userData.isVerified ? <Order /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
+          />
+          <Route
+            path="/faq"
+            element={userData && userData.isVerified ? <FAQPage /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
           />
 
           {/* ================= OTHER ROUTES ================= */}
