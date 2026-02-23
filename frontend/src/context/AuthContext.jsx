@@ -3,7 +3,7 @@ import { createContext } from 'react'
 
 export const authDataContext = createContext() // context api create = create provider consumer 
 const AuthContext = ({children}) => { //wrapper component.
-    let serverUrl = "http://localhost:8000"
+    let serverUrl = "https://varuno-bbjw.onrender.com"
      let value = {
         serverUrl
      }
