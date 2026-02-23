@@ -5,6 +5,7 @@ const VideoHero1 = () => {
   const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(true);
   const [hovered, setHovered] = useState(false);
+  const videoUrl = import.meta.env.VITE_VIDEO1_URL;
 
   const toggleMute = () => {
     if (!videoRef.current) return;
@@ -20,14 +21,15 @@ const VideoHero1 = () => {
     >
       <div className="relative w-full h-full max-h-[60vh]">
         <video
-          ref={videoRef}
+            ref={videoRef}
+          src={videoUrl}  // ✅ Yahan use karo
           autoPlay
           muted={isMuted}
           loop
           playsInline
           className="w-full h-full object-cover rounded-xl shadow-lg mb-4"
         >
-          <source src="/video/video1.mp4" type="video/mp4" />
+         
         </video>
 
         {/* Right Mute/Unmute */}
