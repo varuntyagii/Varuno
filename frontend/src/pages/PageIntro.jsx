@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Gsap from "./gsap";
+import Gsap from "./Gsap";
 import ShapeOverlay from "./ShapeOverlay";
 
 const PageIntro = ({ children }) => {
