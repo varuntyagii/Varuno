@@ -374,64 +374,45 @@
 
 // export default App;
 
-
-import React, { useContext, lazy, Suspense } from 'react';
+import React, { useContext } from 'react';
 import { Navigate, Routes, Route, useLocation } from 'react-router-dom';
 import { userDataContext } from './context/UserContext';
 import { Toaster } from "sonner";
 import Nav from './component/Nav';
 import Ai from './component/Ai';
 
-// 🔥 Lazy load all pages
-const Registration = lazy(() => import('./pages/Registration'));
-const Login = lazy(() => import('./pages/Login'));
-const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
-const Collection = lazy(() => import('./pages/Collection'));
-const Contact = lazy(() => import('./pages/Contact'));
-const Product = lazy(() => import('./pages/Product'));
-const ProductDetails = lazy(() => import('./pages/ProductDetails'));
-const Cart = lazy(() => import('./pages/Cart'));
-const PlaceOrder = lazy(() => import('./pages/PlaceOrder'));
-const Order = lazy(() => import('./pages/Order'));
-const NoteFound = lazy(() => import('./pages/NoteFound'));
-const VerifyEmail = lazy(() => import('./pages/VerifyEmail'));
-const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
-const LinkedInSuccess = lazy(() => import('./pages/LinkedInSuccess'));
-const Success = lazy(() => import('./pages/Success'));
-const Cancel = lazy(() => import('./pages/Cancel'));
-const FAQPage = lazy(() => import('./pages/FAQPage'));
-
-// 🎨 Loading Component
-const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-950 via-gray-900 to-gray-800">
-    <div className="text-center">
-      <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-      <p className="text-gray-300 text-lg">Loading page...</p>
-    </div>
-  </div>
-);
-
+import Registration from './pages/Registration';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import About from './pages/About';
+import Collection from './pages/Collection';
+import Contact from './pages/Contact';
+import Product from './pages/Product';
+import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
+import PlaceOrder from './pages/PlaceOrder';
+import Order from './pages/Order';
+import NoteFound from './pages/NoteFound';
+import VerifyEmail from './pages/VerifyEmail';
+import ForgotPassword from './pages/ForgotPassword';
+import LinkedInSuccess from './pages/LinkedInSuccess';
+// import DiscordSuccess from './pages/DiscordSuccess';
+import Success from './pages/Success';
+import Cancel from './pages/Cancel';
 import { ReactLenis } from 'lenis/react';
+import FAQPage from './pages/FAQPage';
 
 const App = () => {
   const { userData, loading } = useContext(userDataContext);
   const location = useLocation();
 
-  if (loading) return <PageLoader />; // 🔥 Better loading state
-
-  // 🔥 Function to wrap routes with Suspense
-  const withSuspense = (Component) => (
-    <Suspense fallback={<PageLoader />}>
-      <Component />
-    </Suspense>
-  );
+  if (loading) return null;
 
   return (
     <ReactLenis
       root
       options={{
-        lerp: 0.1,
+        lerp: 0.1, // smoothness, lower is slower
         smoothWheel: true,
         smoothTouch: true
       }}
@@ -456,19 +437,21 @@ const App = () => {
           }}
         />
 
+
         <Routes>
+
           {/* ================= PUBLIC ROUTES ================= */}
           <Route
             path="/login"
-            element={!userData ? withSuspense(Login) : userData.isVerified ? <Navigate to="/" replace /> : <Navigate to="/verifemail" replace />}
+            element={!userData ? <Login /> : userData.isVerified ? <Navigate to="/" replace /> : <Navigate to="/verifemail" replace />}
           />
           <Route
             path="/signup"
-            element={!userData ? withSuspense(Registration) : userData.isVerified ? <Navigate to="/" replace /> : <Navigate to="/verifemail" replace />}
+            element={!userData ? <Registration /> : userData.isVerified ? <Navigate to="/" replace /> : <Navigate to="/verifemail" replace />}
           />
           <Route
             path="/forgot-password"
-            element={!userData ? withSuspense(ForgotPassword) : <Navigate to="/" replace />}
+            element={!userData ? <ForgotPassword /> : <Navigate to="/" replace />}
           />
 
           {/* ================= EMAIL VERIFICATION ================= */}
@@ -478,7 +461,7 @@ const App = () => {
               !userData
                 ? <Navigate to="/signup" replace />
                 : !userData.isVerified
-                  ? withSuspense(VerifyEmail)
+                  ? <VerifyEmail />
                   : <Navigate to="/" replace />
             }
           />
@@ -486,49 +469,51 @@ const App = () => {
           {/* ================= PROTECTED + VERIFIED ROUTES ================= */}
           <Route
             path="/"
-            element={userData && userData.isVerified ? withSuspense(Home) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
+            element={userData && userData.isVerified ? <Home /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
           />
           <Route
             path="/about"
-            element={userData && userData.isVerified ? withSuspense(About) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
+            element={userData && userData.isVerified ? <About /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
           />
           <Route
             path="/collection"
-            element={userData && userData.isVerified ? withSuspense(Collection) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
+            element={userData && userData.isVerified ? <Collection /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
           />
           <Route
             path="/contact"
-            element={userData && userData.isVerified ? withSuspense(Contact) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
+            element={userData && userData.isVerified ? <Contact /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
           />
           <Route
             path="/product"
-            element={userData && userData.isVerified ? withSuspense(Product) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
+            element={userData && userData.isVerified ? <Product /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
           />
           <Route
             path="/productDetails/:productId"
-            element={userData && userData.isVerified ? withSuspense(ProductDetails) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
+            element={userData && userData.isVerified ? <ProductDetails /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
           />
           <Route
             path="/cart"
-            element={userData && userData.isVerified ? withSuspense(Cart) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
+            element={userData && userData.isVerified ? <Cart /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
           />
           <Route
             path="/placeorder"
-            element={userData && userData.isVerified ? withSuspense(PlaceOrder) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
+            element={userData && userData.isVerified ? <PlaceOrder /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
           />
           <Route
             path="/order"
-            element={userData && userData.isVerified ? withSuspense(Order) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
+            element={userData && userData.isVerified ? <Order /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
           />
           <Route
             path="/faq"
-            element={userData && userData.isVerified ? withSuspense(FAQPage) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
+            element={userData && userData.isVerified ? <FAQPage /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />}
           />
 
           {/* ================= OTHER ROUTES ================= */}
-          <Route path="/linkedin/success" element={userData && userData.isVerified ? withSuspense(LinkedInSuccess) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} />
-          <Route path="/success" element={userData && userData.isVerified ? withSuspense(Success) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} />
-          <Route path="/cancel" element={userData && userData.isVerified ? withSuspense(Cancel) : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} />
+          <Route path="/linkedin/success" element={userData && userData.isVerified ? <LinkedInSuccess /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} />
+          {/* Discord success is PUBLIC — Supabase redirects here before our session is set */}
+          {/* <Route path="/discord/success" element={<DiscordSuccess />} /> */}
+          <Route path="/success" element={userData && userData.isVerified ? <Success /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} />
+          <Route path="/cancel" element={userData && userData.isVerified ? <Cancel /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} />
 
           {/* Catch all */}
           <Route
@@ -536,14 +521,18 @@ const App = () => {
             element={
               userData
                 ? userData.isVerified
-                  ? withSuspense(NoteFound)
-                  : <Navigate to="/verifemail" replace />
-                : <Navigate to="/signup" replace />
+                  ? <NoteFound />            // verified users see 404 page
+                  : <Navigate to="/verifemail" replace /> // unverified users stay on verify
+                : <Navigate to="/signup" replace />       // not logged in -> signup
             }
           />
+
         </Routes>
-        
         {userData && userData.isVerified && <Ai />}
+
+
+
+
       </div>
     </ReactLenis>
   )
