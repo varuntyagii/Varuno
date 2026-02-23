@@ -82,7 +82,7 @@ export const unsubscribeNewsletter = async (req, res) => {
 
     await Newsletter.findOneAndDelete({ email: email.toLowerCase().trim() });
 
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const frontendUrl = process.env.FRONTEND_URL || "https://varuno-1.onrender.com";
     res.redirect(`${frontendUrl}?unsubscribed=true`);
   } catch (error) {
     console.error("Unsubscribe error:", error);
