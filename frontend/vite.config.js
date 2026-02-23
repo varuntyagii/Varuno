@@ -1,24 +1,37 @@
+// vite.config.js full optimized version:
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { imagetools } from 'vite-imagetools'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  assetsInclude: ['**/*.riv'],
+  plugins: [react(), tailwindcss(), imagetools()],
   build: {
-    chunkSizeWarningLimit: 1000,  // warning limit 1000kb
+    target: 'es2020',
+    minify: 'terser', // Better minification
+    terserOptions: {
+      compress: {
+        drop_console: true, // Production me console.log hata dega
+        drop_debugger: true
+      }
+    },
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'gsap', 'react-router-dom'],
           lottie: ['lottie-web'],
-          // Agar aur libraries ho to yahan add kar:
-          // ui: ['framer-motion'],
-          // three: ['three', '@react-three/fiber']
+          'ui-components': ['framer-motion', 'react-hot-toast']
         }
       }
+    },
+    // Cache busting
+    assetsInlineLimit: 4096 // 4KB se chhoti images inline ho jayengi
+  },
+  server: {
+    // Dev server fast karne ke liye
+    fs: {
+      strict: false
     }
   }
-  // server: {port: 5173}  // ye comment mein hai, zaroorat nahi
 })
