@@ -1041,7 +1041,7 @@ const Login = () => {
     const params = new URLSearchParams({
       response_type: "code",
       client_id: import.meta.env.VITE_LINKEDIN_CLIENT_ID,
-      redirect_uri: "http://localhost:8000/api/auth/linkedin/callback",
+      redirect_uri: `${serverUrl}/api/auth/linkedin/callback`,
       scope: "openid profile email",
       state: Math.random().toString(36).substring(2, 15),
     });
