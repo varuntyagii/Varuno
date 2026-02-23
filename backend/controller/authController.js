@@ -66,8 +66,8 @@ export const registration = async (req, res) => {
     let token = await genToken(user._id)
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "None",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
@@ -86,9 +86,7 @@ export const registration = async (req, res) => {
 export const login = async (req, res) => {
   try {
     let { email, password } = req.body;
-    console.log("=== LOGIN ATTEMPT ===");
-    console.log("Request Body:", req.body);
-    console.log("Searching for email:", email);
+   
 
     let user = await User.findOne({ email }).select("+password");
     if (!user) {
@@ -112,8 +110,8 @@ export const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "None",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
@@ -278,8 +276,8 @@ export const googleLogin = async (req, res) => {
     let token = await genToken(user._id)
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "None",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
@@ -309,8 +307,8 @@ export const facebookLogin = async (req, res) => {
     let token = await genToken(user._id)
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "None",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
@@ -333,7 +331,7 @@ export const facebookLogin = async (req, res) => {
 export const githubLogin = async (req, res) => {
   try {
     let { name, email } = req.body;
-    console.log("GitHub Login Request Body:", req.body);
+    
 
     if (!name) name = "GitHub User";
 
@@ -349,8 +347,8 @@ export const githubLogin = async (req, res) => {
     let token = await genToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "None",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
@@ -378,7 +376,7 @@ const getAccesToken = async (code) => {
     code: code,
     client_id: process.env.LINKEDIN_CLIENT_ID,
     client_secret: process.env.LINKEDIN_CLIENT_SECRET,
-    redirect_uri: 'http://localhost:8000/api/auth/linkedin/callback',
+    redirect_uri:  process.env.LINKEDIN_REDIRECT_URI,
 
   })
   const resposne = await fetch('https://www.linkedin.com/oauth/v2/accessToken', {
@@ -401,9 +399,10 @@ const getUserData = async (accessToken) => {
       Authorization: `Bearer ${accessToken}`,
     }
   })
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
+ if (!resposne.ok) {
+  const err = await resposne.text();
+  throw new Error(err);
+}
   const userData = await response.json()
   return userData;
 }
@@ -436,8 +435,8 @@ export const linkedinLogin = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "None",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
@@ -445,7 +444,7 @@ export const linkedinLogin = async (req, res) => {
 
 
     // return res.status(200).json({ success: true, user });
-    res.redirect("http://localhost:5173/linkedin/success");
+    res.redirect(`${process.env.FRONTEND_URL}/linkedin/success`);
 
 
   } catch (error) {
@@ -458,7 +457,7 @@ export const microsoftLogin = async (req, res) => {
   try {
     const { name, email, phoneNumber, avatar, idToken } = req.body;
 
-    console.log("🔥 Backend received:", req.body);
+  
 
     let finalEmail = email;
 
@@ -473,7 +472,7 @@ export const microsoftLogin = async (req, res) => {
     // 🔥 GUEST EMAIL - NO ERROR!
     if (!finalEmail) {
       finalEmail = `${name.toLowerCase().replace(/\s+/g, '')}@microsoft-guest.com`;
-      console.log("✅ Guest email:", finalEmail);
+      
     }
 
     let user = await User.findOne({ email: finalEmail });
@@ -493,8 +492,8 @@ export const microsoftLogin = async (req, res) => {
     const token = await genToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "None",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
@@ -520,8 +519,8 @@ export const adminLogin = async (req, res) => {
       let token = await genToken1(email)
       res.cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "None",
         path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000
       });
@@ -545,8 +544,8 @@ export const adminLogOut = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: "lax",
-      secure: false,
+      sameSite: "None",
+      secure: true,
       path: "/"
     });
 
