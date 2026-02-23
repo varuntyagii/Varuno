@@ -34,7 +34,7 @@ export const subscribeNewsletter = async (req, res) => {
     // Send Welcome Email
     const smtpUser = (process.env.SMTP_USER || "").replace(/"/g, "").trim();
     const currentDate = new Date().toLocaleString();
-    const backendUrl = process.env.BACKEND_URL || "http://localhost:8000";
+    const backendUrl = process.env.BACKEND_URL || "https://varuno-bbjw.onrender.com";
 
     const mailOptions = {
       from: smtpUser,
