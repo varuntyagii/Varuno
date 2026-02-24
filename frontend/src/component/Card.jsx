@@ -3,14 +3,15 @@ import { shopDataContext } from "../context/ShopContext";
 import { useNavigate } from "react-router-dom";
 
 const Card = React.memo(({ name, image, id, price, originalPrice, category }) => {
-  const { currency } = useContext(shopDataContext);
+  const { currency, wishlist, toggleWishlist } = useContext(shopDataContext);
   const navigate = useNavigate();
   const [imgLoaded, setImgLoaded] = useState(false);
-  const [wishlist, setWishlist] = useState(false);
 
   const discount = originalPrice
     ? Math.round(((originalPrice - price) / originalPrice) * 100)
     : 0;
+
+  const isWishlisted = wishlist?.some(item => item._id === id);
 
   const categoryConfig = {
     female: { label: "Women", dot: "#f472b6" },
@@ -30,7 +31,7 @@ const Card = React.memo(({ name, image, id, price, originalPrice, category }) =>
 
       {/* Image Block */}
       <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-gray-100">
-        
+
         {/* Skeleton */}
         {!imgLoaded && (
           <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse" />
@@ -45,28 +46,46 @@ const Card = React.memo(({ name, image, id, price, originalPrice, category }) =>
           loading="lazy"
         />
 
-        {/* Top bar */}
+        {/* Top Bar */}
         <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
-          {/* Category dot + label */}
+          {/* Category Badge */}
           <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: cat.dot }} />
-            <span className="text-[11px] font-medium text-gray-700 tracking-wide">{cat.label}</span>
+            <span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ backgroundColor: cat.dot }}
+            />
+            <span className="text-[11px] font-medium text-gray-700 tracking-wide">
+              {cat.label}
+            </span>
           </div>
 
-          {/* Wishlist */}
+          {/* Wishlist Button */}
           <button
-            onClick={(e) => { e.stopPropagation(); setWishlist(!wishlist); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleWishlist({ _id: id, name, image, price, originalPrice, category });
+            }}
             className="w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm transition-transform duration-200 hover:scale-110"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill={wishlist ? "#f43f5e" : "none"} stroke={wishlist ? "#f43f5e" : "#6b7280"} strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            <svg
+              className="w-4 h-4 transition-all duration-200"
+              viewBox="0 0 24 24"
+              fill={isWishlisted ? "#f43f5e" : "none"}
+              stroke={isWishlisted ? "#f43f5e" : "#6b7280"}
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
             </svg>
           </button>
         </div>
 
-        {/* Discount badge */}
+        {/* Discount Badge */}
         {discount > 0 && (
-          <div className="absolute bottom-3 left-3 bg-rose-500 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full">
+          <div className="absolute bottom-14 left-3 bg-rose-500 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full">
             -{discount}%
           </div>
         )}
@@ -87,8 +106,8 @@ const Card = React.memo(({ name, image, id, price, originalPrice, category }) =>
 
       {/* Info Block */}
       <div className="mt-3 px-0.5 space-y-1">
-        {/* Name */}
-        <h3 className="text-gray-100 text-sm font-medium line-clamp-1 tracking-tight">
+        {/* Product Name */}
+        <h3 className="text-gray-900 text-sm font-medium line-clamp-1 tracking-tight">
           {name}
         </h3>
 
@@ -104,7 +123,7 @@ const Card = React.memo(({ name, image, id, price, originalPrice, category }) =>
 
         {/* Price */}
         <div className="flex items-baseline gap-2">
-          <span className="text-base font-semibold text-gray-100">
+          <span className="text-base font-semibold text-gray-900">
             {currency}{price.toLocaleString()}
           </span>
           {originalPrice && (
