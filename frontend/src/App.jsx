@@ -133,7 +133,10 @@ const App = () => {
           />
 
           {/* ================= OTHER ROUTES ================= */}
-          <Route path="/linkedin/success" element={userData && userData.isVerified ? <LinkedInSuccess /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} />
+          {/* <Route path="/linkedin/success" element={userData && userData.isVerified ? <LinkedInSuccess /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} /> */}
+
+          <Route path="/linkedin/success" element={<LinkedInSuccess />} />
+
           {/* Discord success is PUBLIC — Supabase redirects here before our session is set */}
           {/* <Route path="/discord/success" element={<DiscordSuccess />} /> */}
           <Route path="/success" element={userData && userData.isVerified ? <Success /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} />
