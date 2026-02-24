@@ -88,7 +88,7 @@ export const newsletterWelcomeTemplate = ({ name, email, currentDate, backendUrl
       </div>
 
       <!-- CTA -->
-      <a href="https://varuno.qzz.io" target="_blank" style="
+      <a href="https://varuno.vercel.app" target="_blank" style="
         display: inline-block;
         padding: 12px 32px;
         background: #e11d48;
