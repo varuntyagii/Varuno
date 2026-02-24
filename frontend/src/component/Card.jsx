@@ -107,7 +107,7 @@ const Card = React.memo(({ name, image, id, price, originalPrice, category }) =>
       {/* Info Block */}
       <div className="mt-3 px-0.5 space-y-1">
         {/* Product Name */}
-        <h3 className="text-gray-900 text-sm font-medium line-clamp-1 tracking-tight">
+        <h3 className="text-gray-100 text-sm font-medium line-clamp-1 tracking-tight ">
           {name}
         </h3>
 
@@ -123,7 +123,7 @@ const Card = React.memo(({ name, image, id, price, originalPrice, category }) =>
 
         {/* Price */}
         <div className="flex items-baseline gap-2">
-          <span className="text-base font-semibold text-gray-900">
+          <span className="text-base font-semibold text-gray-100">
             {currency}{price.toLocaleString()}
           </span>
           {originalPrice && (
