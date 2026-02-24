@@ -480,7 +480,7 @@ const Collection = () => {
   }, [product]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-800 text-gray-100 pt-16 md:pt-[70px] pb-12">
+    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-800 text-gray-100 pt-16 md:pt-[70px] pb-20">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* ─── Desktop Sidebar ─── */}
