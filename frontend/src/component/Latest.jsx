@@ -20,26 +20,28 @@ const Latest = () => {
         </p>
       </div>
 
-      <div
-        className="
-          grid
-          grid-cols-1
-          sm:grid-cols-2
-          md:grid-cols-3
-          lg:grid-cols-4
-          gap-6
-        "
-      >
-        {latestProduct.map((item) => (
-          <Card
-            key={item._id}
-            id={item._id}
-            name={item.name}
-            image={item.image}
-            price={item.price}
-          />
-        ))}
-      </div>
+    <div className="flex justify-center">
+  <div
+    className="
+      grid
+      grid-cols-1
+      sm:grid-cols-2
+      md:grid-cols-3
+      lg:grid-cols-4
+      gap-6
+    "
+  >
+    {latestProduct.map((item) => (
+      <Card
+        key={item._id}
+        id={item._id}
+        name={item.name}
+        image={item.image}
+        price={item.price}
+      />
+    ))}
+  </div>
+</div>
     </section>
   );
 };
