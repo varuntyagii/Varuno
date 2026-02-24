@@ -69,7 +69,7 @@ app.use(cookieParser());
 // CORS
 app.use(
   cors({
-    origin: ["https://varuno-1.onrender.com", "https://admin-y1lw.onrender.com", "varuno.vercel.app"],
+    origin: ["https://varuno-1.onrender.com", "https://admin-y1lw.onrender.com", "https://varuno.vercel.app/"],
     // origin:true,
     credentials: true,
   })
