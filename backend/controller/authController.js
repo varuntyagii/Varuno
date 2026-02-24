@@ -86,7 +86,7 @@ export const registration = async (req, res) => {
 export const login = async (req, res) => {
   try {
     let { email, password } = req.body;
-   
+
 
     let user = await User.findOne({ email }).select("+password");
     if (!user) {
@@ -331,7 +331,7 @@ export const facebookLogin = async (req, res) => {
 export const githubLogin = async (req, res) => {
   try {
     let { name, email } = req.body;
-    
+
 
     if (!name) name = "GitHub User";
 
@@ -376,9 +376,9 @@ const getAccesToken = async (code) => {
     code: code,
     client_id: process.env.LINKEDIN_CLIENT_ID,
     client_secret: process.env.LINKEDIN_CLIENT_SECRET,
-    redirect_uri: 'https://varuno-bbjw.onrender.com/api/auth/linkedin/callback',
+    redirect_uri: process.env.LINKEDIN_REDIRECT_URI || 'http://localhost:8000/api/auth/linkedin/callback',
   });
-  
+
   // ✅ FIX 1: response (not resposne)
   const response = await fetch('https://www.linkedin.com/oauth/v2/accessToken', {
     method: 'post',
@@ -390,7 +390,7 @@ const getAccesToken = async (code) => {
   if (!response.ok) {
     throw new Error(response.statusText);
   }
-  
+
   // ✅ FIX 3: response (not resposne)
   const accessToken = await response.json();
   return accessToken;
@@ -409,7 +409,7 @@ const getUserData = async (accessToken) => {
     const err = await response.text();
     throw new Error(err);
   }
-  
+
   const userData = await response.json();
   return userData;
 }
@@ -418,17 +418,17 @@ export const linkedinLogin = async (req, res) => {
   try {
     const { code } = req.query;
     console.log("LinkedIn code received:", code ? "Yes" : "No");
-    
+
     const accessToken = await getAccesToken(code);
     console.log("Access token received:", accessToken ? "Yes" : "No");
-    
+
     const userData = await getUserData(accessToken.access_token);
     console.log("User data received:", userData ? "Yes" : "No");
 
     if (!userData || !userData.email) {
-      return res.status(500).json({ 
+      return res.status(500).json({
         message: "Failed to fetch LinkedIn user data",
-        error: "No email received from LinkedIn" 
+        error: "No email received from LinkedIn"
       });
     }
 
@@ -455,14 +455,15 @@ export const linkedinLogin = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
-    // ✅ Success redirect
-    res.redirect(`https://varuno-1.onrender.com/linkedin/success`);
+    // ✅ Success redirect - use environment variable if present
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    res.redirect(`${frontendUrl}/linkedin/success`);
 
   } catch (error) {
     console.error("LinkedIn login error:", error);
-    res.status(500).json({ 
-      message: "LinkedIn login failed", 
-      error: error.message 
+    res.status(500).json({
+      message: "LinkedIn login failed",
+      error: error.message
     });
   }
 };
@@ -470,7 +471,7 @@ export const microsoftLogin = async (req, res) => {
   try {
     const { name, email, phoneNumber, avatar, idToken } = req.body;
 
-  
+
 
     let finalEmail = email;
 
@@ -485,7 +486,7 @@ export const microsoftLogin = async (req, res) => {
     // 🔥 GUEST EMAIL - NO ERROR!
     if (!finalEmail) {
       finalEmail = `${name.toLowerCase().replace(/\s+/g, '')}@microsoft-guest.com`;
-      
+
     }
 
     let user = await User.findOne({ email: finalEmail });
