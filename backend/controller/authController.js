@@ -456,7 +456,7 @@ export const linkedinLogin = async (req, res) => {
     });
 
     // ✅ Success redirect
-    res.redirect(`${process.env.FRONTEND_URL}/linkedin/success`);
+    res.redirect(`https://varuno-1.onrender.com/linkedin/success`);
 
   } catch (error) {
     console.error("LinkedIn login error:", error);
