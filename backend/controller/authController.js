@@ -455,13 +455,13 @@ export const linkedinLogin = async (req, res) => {
 
     const token = await genToken(user._id);
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      path: "/",
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+  res.cookie("token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",  // ✅ only true in production (HTTPS)
+  sameSite: process.env.NODE_ENV === "production" ? "None" : "lax", // ✅ lax for localhost
+  path: "/",
+  maxAge: 7 * 24 * 60 * 60 * 1000
+});
 
     // ✅ Success redirect - use environment variable if present
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
