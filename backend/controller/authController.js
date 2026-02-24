@@ -376,19 +376,23 @@ const getAccesToken = async (code) => {
     code: code,
     client_id: process.env.LINKEDIN_CLIENT_ID,
     client_secret: process.env.LINKEDIN_CLIENT_SECRET,
-    redirect_uri:  'https://varuno-bbjw.onrender.com/api/auth/linkedin/callback',
-
-  })
-  const resposne = await fetch('https://www.linkedin.com/oauth/v2/accessToken', {
+    redirect_uri: 'https://varuno-bbjw.onrender.com/api/auth/linkedin/callback',
+  });
+  
+  // ✅ FIX 1: response (not resposne)
+  const response = await fetch('https://www.linkedin.com/oauth/v2/accessToken', {
     method: 'post',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: body.toString()
+  });
 
-  })
-  if (!resposne.ok) {
-    throw new Error(resposne.statusText);
+  // ✅ FIX 2: response (not resposne)
+  if (!response.ok) {
+    throw new Error(response.statusText);
   }
-  const accessToken = await resposne.json()
+  
+  // ✅ FIX 3: response (not resposne)
+  const accessToken = await response.json();
   return accessToken;
 }
 
@@ -398,33 +402,43 @@ const getUserData = async (accessToken) => {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     }
-  })
- if (!resposne.ok) {
-  const err = await resposne.text();
-  throw new Error(err);
-}
-  const userData = await response.json()
+  });
+
+  // ✅ FIX 4: response (not resposne)
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(err);
+  }
+  
+  const userData = await response.json();
   return userData;
 }
 
 export const linkedinLogin = async (req, res) => {
   try {
     const { code } = req.query;
+    console.log("LinkedIn code received:", code ? "Yes" : "No");
+    
     const accessToken = await getAccesToken(code);
+    console.log("Access token received:", accessToken ? "Yes" : "No");
+    
     const userData = await getUserData(accessToken.access_token);
+    console.log("User data received:", userData ? "Yes" : "No");
 
-    if (!userData) {
-      return res.status(500).json({ message: "Failed to fetch LinkedIn user data" });
+    if (!userData || !userData.email) {
+      return res.status(500).json({ 
+        message: "Failed to fetch LinkedIn user data",
+        error: "No email received from LinkedIn" 
+      });
     }
 
     let user = await User.findOne({ email: userData.email });
     if (!user) {
       user = await User.create({
-        name: userData.name,
+        name: userData.name || userData.given_name || 'LinkedIn User',
         email: userData.email,
         isVerified: true,
-        // phone: userData?.phone, // Phone might not be available
-        // avatar: userData?.picture // Picture might be in a different structure
+        avatar: userData.picture || null
       });
     } else if (!user.isVerified) {
       user.isVerified = true;
@@ -441,18 +455,17 @@ export const linkedinLogin = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
-
-
-    // return res.status(200).json({ success: true, user });
+    // ✅ Success redirect
     res.redirect(`${process.env.FRONTEND_URL}/linkedin/success`);
-
 
   } catch (error) {
     console.error("LinkedIn login error:", error);
-    res.status(500).json({ message: "LinkedIn login failed", error: error.message });
+    res.status(500).json({ 
+      message: "LinkedIn login failed", 
+      error: error.message 
+    });
   }
 };
-
 export const microsoftLogin = async (req, res) => {
   try {
     const { name, email, phoneNumber, avatar, idToken } = req.body;
