@@ -1038,10 +1038,13 @@ const Login = () => {
   // ─── LinkedIn (redirect-based) ─────────────────────────────────────
   const handleLoginLinkedin = () => {
     const loading = toast.loading("Redirecting to LinkedIn...");
+    const redirectUri = import.meta.env.PROD 
+    ? 'https://varuno-bbjw.onrender.com/api/auth/linkedin/callback'  // Production
+    : `${serverUrl}/api/auth/linkedin/callback`; 
     const params = new URLSearchParams({
       response_type: "code",
       client_id: import.meta.env.VITE_LINKEDIN_CLIENT_ID,
-      redirect_uri: `${serverUrl}/api/auth/linkedin/callback`,
+      redirect_uri: redirectUri,
       scope: "openid profile email",
       state: Math.random().toString(36).substring(2, 15),
     });
