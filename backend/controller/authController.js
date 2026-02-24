@@ -1,3 +1,4 @@
+
 import User from "../model/userModel.js";
 import validator from "validator"
 import bcrypt from "bcryptjs"
@@ -250,24 +251,14 @@ export const resendOtp = async (req, res) => {
 
 
 
-eexport const logOut = async (req, res) => {
+export const logOut = async (req, res) => {
   try {
-    // ✅ Cookie clear karte time saare options do
-    res.clearCookie('token', {
-      httpOnly: true,
-      secure: true,        // HTTPS ke liye (production)
-      sameSite: "None",     // Cross-origin ke liye
-      path: "/"            // Root path
-    });
-    
+    res.clearCookie('token');
     return res.status(200).json({
       message: "logOut successful"
-    });
-    
+    })
   } catch (error) {
-    return res.status(500).json({ 
-      message: `logOut error ${error}` 
-    });
+    return res.status(500).json({ message: `logOut error ${error}` })
   }
 }
 
