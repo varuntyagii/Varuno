@@ -467,7 +467,8 @@ export const linkedinLogin = async (req, res) => {
 
     // ✅ Success redirect - use environment variable if present
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-    res.redirect(`${frontendUrl}/linkedin/success`);
+   res.redirect(`${frontendUrl}/linkedin/success?token=${token}`);
+
 
   } catch (error) {
     console.error("LinkedIn login error:", error);
