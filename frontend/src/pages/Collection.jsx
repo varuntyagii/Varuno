@@ -376,7 +376,15 @@ const Collection = () => {
           {/* Products Grid */}
           <div className="px-4 sm:px-6 lg:px-12 pb-12">
             {filterProduct.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+           <div className="
+                grid 
+                grid-cols-1 
+                sm:grid-cols-2 
+                lg:grid-cols-3 
+                xl:grid-cols-4 
+                gap-6
+                justify-items-center
+              ">
                 {filterProduct.map(item => (
                   <Card
                     key={item._id}
