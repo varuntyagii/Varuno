@@ -1,5 +1,6 @@
+
 import React, { useContext } from 'react';
-import { Navigate, Routes, Route, useLocation } from 'react-router-dom';
+import { Navigate, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { userDataContext } from './context/UserContext';
 import { Toaster } from "sonner";
 import Nav from './component/Nav';
@@ -25,10 +26,16 @@ import Success from './pages/Success';
 import Cancel from './pages/Cancel';
 import { ReactLenis } from 'lenis/react';
 import FAQPage from './pages/FAQPage';
+import Wishlist from './component/Wishlist';
+import { shopDataContext } from './context/ShopContext';
+import { FaHeart } from 'react-icons/fa';
 
 const App = () => {
   const { userData, loading } = useContext(userDataContext);
   const location = useLocation();
+  const { wishlist } = useContext(shopDataContext);
+
+const navigate = useNavigate();
 
   if (loading) return null;
 
@@ -133,14 +140,12 @@ const App = () => {
           />
 
           {/* ================= OTHER ROUTES ================= */}
-          {/* <Route path="/linkedin/success" element={userData && userData.isVerified ? <LinkedInSuccess /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} /> */}
-
-          <Route path="/linkedin/success" element={<LinkedInSuccess />} />
-
+          <Route path="/linkedin/success" element={userData && userData.isVerified ? <LinkedInSuccess /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} />
           {/* Discord success is PUBLIC — Supabase redirects here before our session is set */}
           {/* <Route path="/discord/success" element={<DiscordSuccess />} /> */}
           <Route path="/success" element={userData && userData.isVerified ? <Success /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} />
           <Route path="/cancel" element={userData && userData.isVerified ? <Cancel /> : <Navigate to={!userData ? "/login" : "/verifemail"} replace />} />
+            <Route path="/wishlist" element={<Wishlist />} />
 
           {/* Catch all */}
           <Route
@@ -153,12 +158,26 @@ const App = () => {
                 : <Navigate to="/signup" replace />       // not logged in -> signup
             }
           />
+          
 
         </Routes>
         {userData && userData.isVerified && <Ai />}
+            {/* Floating Wishlist Button - Screen Bottom Right */}
 
 
-
+          { userData && userData.isVerified && <button
+  onClick={() => navigate("/wishlist")}
+  className="fixed bottom-20 right-4 z-50 w-10 h-10 bg-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center hover:scale-110 transition-transform duration-200 md:bottom-18"
+>
+  <FaHeart className={`w-4 h-4 ${wishlist?.length > 0 ? 'text-rose-500' : 'text-gray-400'}`} />
+  
+  {/* Badge */}
+  {wishlist?.length > 0 && (
+    <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-medium">
+      {wishlist.length}
+    </span>
+  )}
+</button>}
 
       </div>
     </ReactLenis>
@@ -166,6 +185,7 @@ const App = () => {
 }
 
 export default App;
+
 
 // import React, { useContext } from 'react'
 // import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
