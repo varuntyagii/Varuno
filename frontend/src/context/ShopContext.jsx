@@ -13,6 +13,8 @@ const ShopContext = ({ children }) => {
     let [showSearch, setShowSearch] = useState(false);
     let [cartItem, setCartItem] = useState({})
     const [discount, setDiscount] = useState(0);
+    const [wishlist, setWishlist] = useState([]);
+
 
 
     let currency = '₹';
@@ -163,7 +165,14 @@ const ShopContext = ({ children }) => {
 
         return amount;
     }
-
+    // 2. Toggle function add karo
+const toggleWishlist = (product) => {
+  setWishlist(prev =>
+    prev.find(item => item._id === product._id)
+      ? prev.filter(item => item._id !== product._id)  // remove
+      : [...prev, product]                              // add
+  );
+};
 
     useEffect(() => {
         getProduct();
@@ -175,8 +184,9 @@ const ShopContext = ({ children }) => {
     }, [])
 
     let value = {
-        product, currency, delivery_fee, getProduct, search, setSearch, showSearch, setShowSearch, addToCart, getCartCount, cartItem, setCartItem, updateQuantity, getCartAmount, discount,
-  setDiscount
+        product, currency, delivery_fee, getProduct, search, setSearch, showSearch, setShowSearch, addToCart, getCartCount, cartItem, setCartItem, updateQuantity, getCartAmount, discount, 
+  setDiscount,   wishlist, toggleWishlist
+
     }
     return (
         <div>
