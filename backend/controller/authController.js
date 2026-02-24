@@ -376,7 +376,9 @@ const getAccesToken = async (code) => {
     code: code,
     client_id: process.env.LINKEDIN_CLIENT_ID,
     client_secret: process.env.LINKEDIN_CLIENT_SECRET,
-    redirect_uri: process.env.LINKEDIN_REDIRECT_URI || 'http://localhost:8000/api/auth/linkedin/callback',
+    // redirect_uri: process.env.LINKEDIN_REDIRECT_URI || 'http://localhost:8000/api/auth/linkedin/callback',
+        redirect_uri: process.env.LINKEDIN_REDIRECT_URI, // ✅ Environment variable use karo
+
   });
 
   // ✅ FIX 1: response (not resposne)
