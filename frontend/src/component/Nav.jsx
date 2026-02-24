@@ -1,5 +1,4 @@
 
-
 import React, { useContext, useEffect, useState } from 'react'
 import logo from "../assets/logo.png";
 // import { IoSearch } from "react-icons/io5";
@@ -24,7 +23,7 @@ import { shopDataContext } from '../context/ShopContext';
 
 
 const Nav = () => {
-  let { getCurrentUser, userData, logout  } = useContext(userDataContext);
+  let { getCurrentUser, userData } = useContext(userDataContext);
   let { serverUrl } = useContext(authDataContext)
   let { search, setSearch, showSearch, setShowSearch, getCartCount } = useContext(shopDataContext);
 
@@ -36,18 +35,18 @@ const Nav = () => {
   let navigate = useNavigate();
 
   const handleLogout = async () => {
-  try {
-    const success = await logout();  // ✅ context wala logout use karo
-    if (success) {
+    try {
+      const result = await axios.delete(serverUrl + "/api/auth/logOut", { withCredentials: true })
+      console.log(result.data);
       toast.success("Logout successful");
-      setShowProfile(false);
+      getCurrentUser();
       navigate("/login");
+
+
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-    toast.error("Logout failed");
   }
-}
 
   const handleSearchFocus = () => {
     setIsSearchFocused(true);
