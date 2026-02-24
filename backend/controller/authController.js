@@ -253,7 +253,12 @@ export const resendOtp = async (req, res) => {
 
 export const logOut = async (req, res) => {
   try {
-    res.clearCookie('token');
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      path: "/"
+    });
     return res.status(200).json({
       message: "logOut successful"
     })
