@@ -1,7 +1,7 @@
 // controller/subscribeNewsletter.js
 import Newsletter from "../model/newsletterSchema.js";
 import { emailClient } from "../middleware/Email.config.js";
-import { newsletterWelcomeTemplate, newsletterAlertTemplate } from "../config/newsletterTemplate.js";
+import { newsletterWelcomeTemplate } from "../config/newsletterTemplate.js";
 import SibApiV3Sdk from "sib-api-v3-sdk";
 import validator from "validator";
 
