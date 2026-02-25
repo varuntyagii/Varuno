@@ -62,6 +62,10 @@ export const registration = async (req, res) => {
       await otpSender(user.email, otp);
     } catch (emailError) {
       console.error("Failed to send initial OTP email:", emailError);
+      return res.status(500).json({
+        message: "Failed to send verification email. Please check your email configuration or try again later.",
+        error: emailError.message
+      });
     }
 
     let token = await genToken(user._id)
@@ -383,7 +387,7 @@ const getAccesToken = async (code) => {
     client_id: process.env.LINKEDIN_CLIENT_ID,
     client_secret: process.env.LINKEDIN_CLIENT_SECRET,
     // redirect_uri: process.env.LINKEDIN_REDIRECT_URI || 'http://localhost:8000/api/auth/linkedin/callback',
-        redirect_uri: process.env.LINKEDIN_REDIRECT_URI, // ✅ Environment variable use karo
+    redirect_uri: process.env.LINKEDIN_REDIRECT_URI, // ✅ Environment variable use karo
 
   });
 
@@ -453,9 +457,7 @@ export const linkedinLogin = async (req, res) => {
       await user.save();
     }
 
-    
-
-  const token = await genToken(user._id);
+    const token = await genToken(user._id);
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -467,8 +469,7 @@ export const linkedinLogin = async (req, res) => {
 
     // ✅ Success redirect - use environment variable if present
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-   res.redirect(`${frontendUrl}/linkedin/success?token=${token}`);
-
+    res.redirect(`${frontendUrl}/linkedin/success`);
 
   } catch (error) {
     console.error("LinkedIn login error:", error);
@@ -687,4 +688,4 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-// MongoDB Update Profile
+// MongoDB Update <Profile></Profile>
