@@ -1,7 +1,9 @@
 // controller/subscribeNewsletter.js
 import Newsletter from "../model/newsletterSchema.js";
-import { transporter } from "../middleware/Email.config.js";
-import { newsletterWelcomeTemplate } from "../config/newsletterTemplate.js";
+import { emailClient } from "../middleware/Email.config.js";
+import { newsletterWelcomeTemplate, newsletterAlertTemplate } from "../config/newsletterTemplate.js";
+import SibApiV3Sdk from "sib-api-v3-sdk";
+import validator from "validator";
 
 export const subscribeNewsletter = async (req, res) => {
   try {
@@ -14,6 +16,13 @@ export const subscribeNewsletter = async (req, res) => {
       });
     }
 
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter a valid email address",
+      });
+    }
+
     // Check existing (case-insensitive)
     const existing = await Newsletter.findOne({
       email: email.toLowerCase().trim()
@@ -22,41 +31,45 @@ export const subscribeNewsletter = async (req, res) => {
     if (existing) {
       return res.status(400).json({
         success: false,
-        message: "Already subscribed",
+        message: "You are already subscribed to our newsletter! 💌",
       });
     }
 
     // Save to database
     await Newsletter.create({
-      email: email.toLowerCase().trim()
+      email: email.toLowerCase().trim(),
+      name: name ? name.trim() : ""
     });
 
     // Send Welcome Email
     const smtpUser = (process.env.SMTP_USER || "").replace(/"/g, "").trim();
     const currentDate = new Date().toLocaleString();
-    const backendUrl = process.env.BACKEND_URL || "https://varuno-bbjw.onrender.com";
+    const backendUrl = process.env.BACKEND_URL || "http://localhost:8000";
 
-    const mailOptions = {
-      from: smtpUser,
-      to: email.toLowerCase().trim(),
-      subject: "Welcome to the Varuno ",
-      html: newsletterWelcomeTemplate({ name, email, currentDate, backendUrl })
-    };
+    let welcomeEmail = new SibApiV3Sdk.SendSmtpEmail();
+    welcomeEmail.sender = { name: "Varuno", email: "support@varuno.qzz.io" };
+    welcomeEmail.to = [{ email: email.toLowerCase().trim(), name: name || "Subscriber" }];
+    welcomeEmail.subject = "Welcome to the Varuno Circle";
+    welcomeEmail.htmlContent = newsletterWelcomeTemplate({ name, email, currentDate, backendUrl });
+    try {
+      await emailClient.sendTransacEmail(welcomeEmail);
+    } catch (brevoError) {
+      console.error("Brevo Welcome Email Error:", brevoError.response ? brevoError.response.body : brevoError);
+    }
 
-    await transporter.sendMail(mailOptions);
+    // Send Alert Notification Email (Requested to go to the logged-in user)
+    let alertEmail = new SibApiV3Sdk.SendSmtpEmail();
+    alertEmail.sender = { name: "Varuno Alert", email: "support@varuno.qzz.io" };
+    // User requested alert to go to them, not the admin
+    alertEmail.to = [{ email: email.toLowerCase().trim(), name: name || "New Member" }];
+    alertEmail.subject = `Joiner Alert: ${name || email} has joined the circle!`;
+    alertEmail.htmlContent = newsletterAlertTemplate({ name, email, currentDate, backendUrl });
 
-    // Send Admin Notification Email
-    const emailUser = (process.env.EMAIL_USER || "").replace(/"/g, "").trim();
-    const adminMailOptions = {
-      from: `"${email}" <${smtpUser}>`, // Shows subscriber email as the sender name
-      replyTo: email, // Restoration: Allows direct reply to the subscriber
-      to: smtpUser,
-      cc: emailUser,
-      subject: `New Joiner Joined Varuno . ${name}`,
-      html: newsletterWelcomeTemplate({ name, email, currentDate, backendUrl })
-    };
-
-    await transporter.sendMail(adminMailOptions);
+    try {
+      await emailClient.sendTransacEmail(alertEmail);
+    } catch (brevoError) {
+      console.error("Brevo Alert Email Error:", brevoError.response ? brevoError.response.body : brevoError);
+    }
 
     res.status(200).json({
       success: true,
@@ -67,7 +80,8 @@ export const subscribeNewsletter = async (req, res) => {
     console.error('Newsletter error:', error);
     res.status(500).json({
       success: false,
-      message: "Server error",
+      message: "Server error during subscription.",
+      error: error.message
     });
   }
 };
@@ -82,7 +96,7 @@ export const unsubscribeNewsletter = async (req, res) => {
 
     await Newsletter.findOneAndDelete({ email: email.toLowerCase().trim() });
 
-    const frontendUrl = process.env.FRONTEND_URL || "https://varuno-1.onrender.com";
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
     res.redirect(`${frontendUrl}?unsubscribed=true`);
   } catch (error) {
     console.error("Unsubscribe error:", error);
