@@ -1,13 +1,7 @@
-// emailTemplates.js
+// EmailTemplate.js - For Node.js/Express backend
 
-// For Vite projects (React, Vue, etc.)
-const VARUNO_LOGO_URL = import.meta.env.VITE_VARUNO_LOGO_URL;
-
-// For Next.js (App Router)
-// const VARUNO_LOGO_URL = process.env.NEXT_PUBLIC_VARUNO_LOGO_URL;
-
-// For Node.js / Express
-// const VARUNO_LOGO_URL = process.env.VARUNO_LOGO_URL;
+// Use process.env for Node.js
+const VARUNO_LOGO_URL = process.env.VARUNO_LOGO_URL || 'https://your-fallback-logo-url.com/logo.png';
 
 export const verificationEmail = (otp) => {
   const safeOtp = String(otp).replace(/[^0-9]/g, '');
