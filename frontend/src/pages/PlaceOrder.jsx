@@ -155,33 +155,63 @@ const PlaceOrder = () => {
   };
 
   const loadRazorpayScript = () => {
-  return new Promise((resolve) => {
-    if (window.Razorpay) return resolve(true);
+    return new Promise((resolve) => {
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
 
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-};
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
 
-const initPay = async (order) => {
-  const loaded = await loadRazorpayScript();
-  if (!loaded) return toast.error("Razorpay failed to load");
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
 
-  const options = {
-    key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-    amount: order.amount,
-    currency: order.currency,
-    order_id: order.id,
-    handler: async (response) => { /* verify payment */ },
-    theme: { color: "#3b82f6" },
+      document.body.appendChild(script);
+    });
   };
 
-  new window.Razorpay(options).open();
-};
+  const initPay = async (order) => {
+    const loaded = await loadRazorpayScript();
+
+    if (!loaded) {
+      toast.error("Razorpay SDK failed to load");
+      return;
+    }
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: order.currency,
+      name: "Your Store",
+      description: "Order Payment",
+      order_id: order.id,
+      handler: async (response) => {
+        try {
+          const verifyRes = await axios.post(
+            `${serverUrl}/api/order/verifyrazorpay`,
+            response,
+            { withCredentials: true }
+          );
+
+          if (verifyRes.data?.success) {
+            setCartItem({});
+            localStorage.removeItem("cartData");
+            toast.success("Payment successful!");
+            navigate("/order");
+          }
+        } catch {
+          toast.error("Payment verification failed");
+        }
+      },
+      theme: { color: "#3b82f6" },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-800 py-8 px-4 sm:px-6 mt-15 mb-15 md:mb-0">
       <Toaster position="top-center" reverseOrder={false} toastOptions={{ duration: 3500 }} />
