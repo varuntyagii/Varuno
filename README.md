@@ -115,7 +115,9 @@
 💻 GitHub: @varuntyagii
 
 </div>
+
 ## 🤝 **Contributing**
+
 - 🍴 Fork the repository
 
 - 🌿 Create branch: git checkout -b feature/AmazingFeature
