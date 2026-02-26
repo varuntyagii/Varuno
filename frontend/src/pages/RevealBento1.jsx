@@ -210,8 +210,7 @@ const EmailListBlock = () => {
     <Block className="col-span-12 md:col-span-9">
       <p className="mb-2 text-2xl font-medium text-white">Join the Varuno Inner Circle</p>
       <p className="mb-6 text-zinc-400">
-        Early access to limited drops • Private previews • Members-only offers
-      </p>
+    Early access to limited drops • Private previews • Members-only offers      </p>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
         <input
           type="text"
@@ -236,7 +235,7 @@ const EmailListBlock = () => {
           disabled={loading}
           className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-rose-600 px-6 py-3.5 text-sm font-medium text-white hover:bg-rose-500 transition-colors shadow-md hover:shadow-rose-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <FiMail /> {loading ? "Sending..." : "Join the Inner Circle"}
+          <FiMail /> {loading ? "Sending..." : "Join US"}
         </button>
       </form>
     </Block>
