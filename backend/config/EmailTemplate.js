@@ -29,8 +29,8 @@ export const verificationEmail = (otp) => {
         <img src="${VARUNO_LOGO_URL}" 
              alt="Varuno" 
              style="height:32px;width:auto;display:block;margin:0 auto;"
-             width="120" 
-             height="32">
+             width="180" 
+             height="90">
       </div>
 
       <div style="padding:40px 30px;text-align:center;">
@@ -103,8 +103,8 @@ export const welcomeEmail = (name) => {
               <img src="${VARUNO_LOGO_URL}" 
                    alt="Varuno" 
                    style="height:40px;width:auto;display:block;margin:0 auto 10px;"
-                   width="150" 
-                   height="40">
+                   width="180" 
+                   height="90">
               <p style="margin:0;font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Welcome to</p>
             </td>
           </tr>
