@@ -1,3 +1,14 @@
+// emailTemplates.js
+
+// For Vite projects (React, Vue, etc.)
+const VARUNO_LOGO_URL = import.meta.env.VITE_VARUNO_LOGO_URL;
+
+// For Next.js (App Router)
+// const VARUNO_LOGO_URL = process.env.NEXT_PUBLIC_VARUNO_LOGO_URL;
+
+// For Node.js / Express
+// const VARUNO_LOGO_URL = process.env.VARUNO_LOGO_URL;
+
 export const verificationEmail = (otp) => {
   const safeOtp = String(otp).replace(/[^0-9]/g, '');
 
@@ -20,9 +31,12 @@ export const verificationEmail = (otp) => {
     <div style="max-width:480px;margin:40px auto;background:#ffffff;border-radius:10px;border:1px solid #e6e8eb;overflow:hidden;">
       
       <div style="background:linear-gradient(90deg,#0f172a,#1e3a8a,#7c3aed);padding:22px;text-align:center;">
-        <div style="font-size:18px;font-weight:700;color:#ffffff;">
-          Varuno
-        </div>
+        <!-- Logo from environment variable -->
+        <img src="${VARUNO_LOGO_URL}" 
+             alt="Varuno" 
+             style="height:32px;width:auto;display:block;margin:0 auto;"
+             width="120" 
+             height="32">
       </div>
 
       <div style="padding:40px 30px;text-align:center;">
@@ -71,7 +85,6 @@ export const verificationEmail = (otp) => {
   `;
 };
 
-
 export const welcomeEmail = (name) => {
   return `
 <!DOCTYPE html>
@@ -92,8 +105,13 @@ export const welcomeEmail = (name) => {
           <!-- Header -->
           <tr>
             <td style="background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 60%,#7c3aed 100%);padding:36px 40px;text-align:center;">
+              <!-- Logo from environment variable -->
+              <img src="${VARUNO_LOGO_URL}" 
+                   alt="Varuno" 
+                   style="height:40px;width:auto;display:block;margin:0 auto 10px;"
+                   width="150" 
+                   height="40">
               <p style="margin:0;font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Welcome to</p>
-              <h1 style="margin:6px 0 0;font-size:26px;font-weight:700;color:#ffffff;letter-spacing:-0.5px;">Varuno</h1>
             </td>
           </tr>
 
@@ -115,7 +133,7 @@ export const welcomeEmail = (name) => {
               <table cellpadding="0" cellspacing="0" width="100%">
                 <tr>
                   <td align="center">
-                    <a href="https://varuno.qzz.io/" style="display:inline-block;background:#1e3a8a;color:#ffffff;text-decoration:none;padding:13px 36px;border-radius:8px;font-size:14px;font-weight:600; text-center;">
+                    <a href="https://varuno.vercel.app" style="display:inline-block;background:#1e3a8a;color:#ffffff;text-decoration:none;padding:13px 36px;border-radius:8px;font-size:14px;font-weight:600;text-align:center;">
                       Get Started
                     </a>
                   </td>
@@ -145,6 +163,3 @@ export const welcomeEmail = (name) => {
 </html>
   `;
 };
-
-
-
