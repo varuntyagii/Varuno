@@ -25,12 +25,12 @@ export const verificationEmail = (otp) => {
     <div style="max-width:480px;margin:40px auto;background:#ffffff;border-radius:10px;border:1px solid #e6e8eb;overflow:hidden;">
       
       <div style="background:linear-gradient(90deg,#0f172a,#1e3a8a,#7c3aed);padding:22px;text-align:center;">
-        <!-- Logo from environment variable -->
+        <!-- Logo from environment variable - SIZE BADHA DIYA -->
         <img src="${VARUNO_LOGO_URL}" 
              alt="Varuno" 
-             style="height:32px;width:auto;display:block;margin:0 auto;"
-             width="180" 
-             height="90">
+             style="height:auto;width:auto;max-width:220px;display:block;margin:0 auto;"
+             width="220" 
+             height="auto">
       </div>
 
       <div style="padding:40px 30px;text-align:center;">
@@ -99,12 +99,12 @@ export const welcomeEmail = (name) => {
           <!-- Header -->
           <tr>
             <td style="background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 60%,#7c3aed 100%);padding:36px 40px;text-align:center;">
-              <!-- Logo from environment variable -->
+              <!-- Logo from environment variable - SIZE BADHA DIYA -->
               <img src="${VARUNO_LOGO_URL}" 
                    alt="Varuno" 
-                   style="height:40px;width:auto;display:block;margin:0 auto 10px;"
-                   width="180" 
-                   height="90">
+                   style="height:auto;width:auto;max-width:200px;display:block;margin:0 auto 15px;"
+                   width="200" 
+                   height="auto">
               <p style="margin:0;font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Welcome to</p>
             </td>
           </tr>
