@@ -123,4 +123,4 @@ export const newsletterWelcomeTemplate = ({ name, email, currentDate, backendUrl
   </div>
 </body>
 </html>
-`;  
+`;
