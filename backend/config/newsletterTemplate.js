@@ -4,123 +4,87 @@ export const newsletterWelcomeTemplate = ({ name, email, currentDate, backendUrl
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Welcome to Varuno</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-  </style>
+  <title>Welcome to Varuno Newsletter</title>
 </head>
-<body style="margin:0; padding:0; background:#0f0f0f; font-family:'Inter', system-ui, sans-serif; color:#e5e5e5;">
-  <div style="
-    max-width: 540px;
-    margin: 30px auto;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid #222;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  ">
+<body style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #f4f4f5;">
 
-    <!-- Header -->
-    <div style="
-      background: linear-gradient(135deg, #9f1239, #be123c);
-      padding: 40px 30px;
-      text-align: center;
-    ">
-      <h1 style="
-        margin: 0;
-        font-size: 42px;
-        font-weight: 700;
-        letter-spacing: -1px;
-        color: white;
-      ">
-        V<span style="color: #fda4af;">A</span>RUNO
-      </h1>
-      <p style="
-        margin: 8px 0 0;
-        font-size: 16px;
-        color: #fda4af;
-        font-weight: 500;
-      ">
-        Inner Circle
-      </p>
-    </div>
+  <!-- Main Container -->
+  <table width="100%" cellpadding="0" cellspacing="0" style="background: #f4f4f5; padding: 30px 0;">
+    <tr>
+      <td align="center">
+        
+        <!-- Email Card -->
+        <table width="500" cellpadding="0" cellspacing="0" style="background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+          
+          <!-- Header -->
+          <tr>
+            <td style="background: #18181b; padding: 32px 30px; text-align: center;">
+              <h1 style="margin: 0; font-size: 28px; font-weight: 600; color: #ffffff;">
+                VARUNO
+              </h1>
+              <p style="margin: 5px 0 0; font-size: 13px; color: #a1a1aa;">
+                Inner Circle Newsletter
+              </p>
+            </td>
+          </tr>
 
-    <!-- Content -->
-    <div style="padding: 32px 28px; text-align: center;">
-      <h2 style="
-        font-size: 24px;
-        font-weight: 600;
-        color: white;
-        margin: 0 0 16px;
-      ">
-        Welcome${name ? `, ${name}` : ''}!
-      </h2>
+          <!-- Content -->
+          <tr>
+            <td style="padding: 32px 30px;">
+              
+              <h2 style="margin: 0 0 12px; font-size: 20px; font-weight: 600; color: #18181b;">
+                Welcome${name ? `, ${name}` : ' to Varuno'}!
+              </h2>
+              
+              <p style="margin: 0 0 20px; font-size: 15px; line-height: 1.5; color: #3f3f46;">
+                Thanks for subscribing to our newsletter. You'll now receive updates about new drops, exclusive offers, and style inspiration.
+              </p>
 
-      <p style="
-        font-size: 15px;
-        line-height: 1.6;
-        color: #d1d5db;
-        margin: 0 0 28px;
-      ">
-        You’re now part of Varuno’s Inner Circle.<br/>
-        Get first access to drops, curated styles & exclusive offers.
-      </p>
+              <!-- Subscription Details -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="background: #f4f4f5; border-radius: 6px; margin: 24px 0;">
+                <tr>
+                  <td style="padding: 16px;">
+                    <p style="margin: 0 0 6px; font-size: 13px; color: #71717a;">Subscribed with:</p>
+                    <p style="margin: 0; font-size: 15px; font-weight: 500; color: #18181b; word-break: break-all;">${email}</p>
+                    <p style="margin: 12px 0 0; font-size: 12px; color: #71717a;">on ${currentDate}</p>
+                  </td>
+                </tr>
+              </table>
 
-      <!-- Email Box -->
-      <div style="
-        background: rgba(159,18,57,0.1);
-        border: 1px solid rgba(159,18,57,0.25);
-        border-radius: 10px;
-        padding: 18px;
-        margin-bottom: 28px;
-      ">
-        <p style="margin: 0 0 6px; color: #fda4af; font-size: 13px;">
-          Subscribed with
-        </p>
-        <p style="
-          margin: 0;
-          font-size: 17px;
-          font-weight: 600;
-          color: white;
-          word-break: break-all;
-        ">
-          ${email}
-        </p>
-      </div>
+              <!-- CTA Button -->
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center">
+                    <a href="https://varuno.vercel.app" 
+                       style="display: inline-block; background: #18181b; color: #ffffff; text-decoration: none; padding: 12px 32px; border-radius: 6px; font-size: 14px; font-weight: 500;">
+                      Visit Varuno
+                    </a>
+                  </td>
+                </tr>
+              </table>
 
-      <!-- CTA -->
-      <a href="https://varuno.vercel.app" target="_blank" style="
-        display: inline-block;
-        padding: 12px 32px;
-        background: #e11d48;
-        color: white;
-        font-size: 15px;
-        font-weight: 600;
-        text-decoration: none;
-        border-radius: 10px;
-        box-shadow: 0 6px 20px rgba(225,29,72,0.25);
-      ">
-        Explore Now
-      </a>
-    </div>
+            </td>
+          </tr>
 
-    <!-- Footer -->
-    <div style="
-      background: #0a0a0a;
-      padding: 24px 28px;
-      text-align: center;
-      font-size: 12px;
-      color: #9ca3af;
-      border-top: 1px solid #222;
-    ">
-      <p style="margin: 0;">
-        © ${new Date().getFullYear()} Varuno
-      </p>
-      <p style="margin: 6px 0 0;">
-        Received on ${currentDate} • 
-        <a href="${backendUrl}/api/newsletter/unsubscribe?email=${email}" style="color: #fda4af; text-decoration: none;">Unsubscribe</a>
-      </p>
-    </div>
-  </div>
+          <!-- Footer -->
+          <tr>
+            <td style="background: #f4f4f5; padding: 24px 30px; text-align: center; border-top: 1px solid #e4e4e7;">
+              <p style="margin: 0 0 8px; font-size: 12px; color: #71717a;">
+                © ${new Date().getFullYear()} Varuno. All rights reserved.
+              </p>
+              <p style="margin: 0; font-size: 12px;">
+                <a href="${backendUrl}/api/newsletter/unsubscribe?email=${email}" 
+                   style="color: #18181b; text-decoration: underline;">Unsubscribe</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
 </body>
 </html>
 `;
