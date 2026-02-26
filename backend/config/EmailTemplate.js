@@ -24,12 +24,12 @@ export const verificationEmail = (otp) => {
 
     <div style="max-width:480px;margin:40px auto;background:#ffffff;border-radius:10px;border:1px solid #e6e8eb;overflow:hidden;">
       
-      <div style="background:#000000;padding:32px 20px;text-align:center;">
+      <div style="background:#000000;padding:14px 20px;text-align:center;">
         <img 
           src="${VARUNO_LOGO_URL}" 
           alt="Varuno"
-          width="260"
-          style="display:block;margin:0 auto;max-width:260px;width:100%;height:auto;"
+          width="200"
+          style="display:block;margin:0 auto;max-width:200px;width:100%;height:auto;"
         />
       </div>
 
@@ -98,14 +98,14 @@ export const welcomeEmail = (name) => {
 
           <!-- Header -->
           <tr>
-            <td style="background:#000000;padding:48px 40px;text-align:center;">
-                <img 
-                  src="${VARUNO_LOGO_URL}" 
-                  alt="Varuno"
-                  width="250"
-                  style="display:block;margin:0 auto 18px;max-width:250px;width:100%;height:auto;"
-                />
-              </td>
+           <td style="background:#000000;padding:18px 40px;text-align:center;">
+                      <img 
+                        src="${VARUNO_LOGO_URL}" 
+                        alt="Varuno"
+                        width="200"
+                        style="display:block;margin:0 auto 8px;max-width:200px;width:100%;height:auto;"
+                      />
+                    </td>
           </tr>
 
           <!-- Body -->
