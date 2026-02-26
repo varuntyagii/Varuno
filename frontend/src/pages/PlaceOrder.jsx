@@ -154,35 +154,66 @@ const PlaceOrder = () => {
     }
   };
 
-  const initPay = (order) => {
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+
+      document.body.appendChild(script);
+    });
+  };
+
+  const initPay = async (order) => {
+    const loaded = await loadRazorpayScript();
+
+    if (!loaded) {
+      toast.error("Razorpay SDK failed to load");
+      return;
+    }
+
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: order.amount,
       currency: order.currency,
-      name: 'Your Store',
-      description: 'Order Payment',
+      name: "Your Store",
+      description: "Order Payment",
       order_id: order.id,
       handler: async (response) => {
         try {
-          const verifyRes = await axios.post(`${serverUrl}/api/order/verifyrazorpay`, response, { withCredentials: true });
+          const verifyRes = await axios.post(
+            `${serverUrl}/api/order/verifyrazorpay`,
+            response,
+            { withCredentials: true }
+          );
+
           if (verifyRes.data?.success) {
             setCartItem({});
-            localStorage.removeItem('cartData');
-            toast.success('Payment successful!');
-            navigate('/order');
+            localStorage.removeItem("cartData");
+            toast.success("Payment successful!");
+            navigate("/order");
           }
-        } catch (err) {
-          toast.error('Payment verification failed');
+        } catch {
+          toast.error("Payment verification failed");
         }
       },
-      theme: { color: '#3b82f6' },
+      theme: { color: "#3b82f6" },
     };
+
     const rzp = new window.Razorpay(options);
     rzp.open();
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-800 py-8 px-4 sm:px-6 mt-15">
+    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-800 py-8 px-4 sm:px-6 mt-15 mb-15 md:mb-0">
       <Toaster position="top-center" reverseOrder={false} toastOptions={{ duration: 3500 }} />
 
       <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12">
@@ -301,16 +332,14 @@ const PlaceOrder = () => {
                 <div
                   key={opt.id}
                   onClick={() => setMethod(opt.id)}
-                  className={`flex items-center gap-3 p-3.5 rounded-lg border-2 cursor-pointer transition-all ${
-                    method === opt.id
-                      ? `border-${opt.color}-500 bg-gray-800/50`
-                      : 'border-gray-700 hover:border-gray-500 bg-gray-800/30'
-                  }`}
+                  className={`flex items-center gap-3 p-3.5 rounded-lg border-2 cursor-pointer transition-all ${method === opt.id
+                    ? `border-${opt.color}-500 bg-gray-800/50`
+                    : 'border-gray-700 hover:border-gray-500 bg-gray-800/30'
+                    }`}
                 >
                   <div
-                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                      method === opt.id ? `border-${opt.color}-500 bg-${opt.color}-600/20` : 'border-gray-500'
-                    }`}
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${method === opt.id ? `border-${opt.color}-500 bg-${opt.color}-600/20` : 'border-gray-500'
+                      }`}
                   >
                     {method === opt.id && <div className={`w-3 h-3 rounded-full bg-${opt.color}-500`} />}
                   </div>
@@ -322,24 +351,23 @@ const PlaceOrder = () => {
               ))}
             </div>
 
-        <button
-  type="submit"
-  onClick={handleSubmit}
-  disabled={loading || !method || isEmpty}
-  className={`w-full mt-5 py-3 px-5 rounded-lg font-medium text-base transition-all ${
-    loading || !method || isEmpty
-      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-      : 'bg-white text-gray-900 hover:bg-gray-100 active:bg-gray-200'
-  }`}
->
-  {loading
-    ? 'Processing...'
-    : isEmpty
-    ? 'Cart empty'
-    : !method
-    ? 'Select payment'
-    : 'PLACE ORDER'}
-</button>
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              disabled={loading || !method || isEmpty}
+              className={`w-full mt-5 py-3 px-5 rounded-lg font-medium text-base transition-all ${loading || !method || isEmpty
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-white text-gray-900 hover:bg-gray-100 active:bg-gray-200'
+                }`}
+            >
+              {loading
+                ? 'Processing...'
+                : isEmpty
+                  ? 'Cart empty'
+                  : !method
+                    ? 'Select payment'
+                    : 'PLACE ORDER'}
+            </button>
           </div>
         </div>
       </div>
