@@ -3,8 +3,8 @@ import { getAuth, GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider, 
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    // authDomain: "myauthproject-457107.firebaseapp.com",
-      authDomain: "varuno.vercel.app",
+    authDomain: "myauthproject-457107.firebaseapp.com",
+      // authDomain: "varuno.vercel.app",
 
     projectId: "myauthproject-457107",
     storageBucket: "myauthproject-457107.firebasestorage.app",
