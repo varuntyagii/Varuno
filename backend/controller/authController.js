@@ -273,7 +273,15 @@ export const logOut = async (req, res) => {
 
 export const googleLogin = async (req, res) => {
   try {
-    let { name, email } = req.body
+    let { name, email, idToken  } = req.body
+    if (!email) {
+      const decoded = await admin.auth().verifyIdToken(idToken);
+      email = decoded.email;
+      name = name || decoded.name;
+    }
+     if (!email) {
+      return res.status(400).json({ message: "Email not found from Google" });
+    }
     let user = await User.findOne({ email });
     if (!user) {
       user = await User.create({ name, email, isVerified: true });
