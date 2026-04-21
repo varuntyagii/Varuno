@@ -584,12 +584,17 @@ const Registration = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const idToken = await user.getIdToken();
-
-      await axios.post(
-        `${serverUrl}/api/auth/googleLogin`,
-        { name: user.displayName, email: user.email, idToken },
-        { withCredentials: true }
-      );
+ const email = user.email || user.providerData[0]?.email;  // fix
+      const name = user.displayName || user.providerData[0]?.displayName; 
+      
+     await axios.post(
+      `${serverUrl}/api/auth/googleLogin`,
+      {
+        name: name,      // user.displayName ki jagah
+        email: email,    // user.email ki jagah
+      },
+      { withCredentials: true }
+    );
 
       await getCurrentUser();
       toast.success("Signed up with Google 🎉", { id: toastId });
