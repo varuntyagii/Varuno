@@ -70,15 +70,14 @@ const Login = () => {
       const idToken = await user.getIdToken();
     console.log("Google user:", user.email, user.displayName); // ye add kar
 
-      await axios.post(
-        `${serverUrl}/api/auth/googleLogin`,
-        {
-          name: user.displayName,
-          email: user.email,
-          idToken,
-        },
-        { withCredentials: true }
-      );
+     await axios.post(
+  `${serverUrl}/api/auth/googleLogin`,
+  {
+    name: name,      // user.displayName ki jagah
+    email: email,    // user.email ki jagah
+  },
+  { withCredentials: true }
+);
 
       await getCurrentUser();
       toast.success("Logged in with Google", { id: loading });
