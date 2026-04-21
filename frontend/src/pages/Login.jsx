@@ -64,6 +64,9 @@ const Login = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+          const email = user.email || user.providerData[0]?.email;  // fix
+      const name = user.displayName || user.providerData[0]?.displayName;  // fix
+      
       const idToken = await user.getIdToken();
     console.log("Google user:", user.email, user.displayName); // ye add kar
 
