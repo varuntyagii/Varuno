@@ -294,12 +294,10 @@ export const googleLogin = async (req, res) => {
 
     return res.status(202).json({ message: "Google Login successfully", user, token });
 
-  } catch (error) {
-    console.log("Google Error");
-
-    return res.status(500).json({ message: "Google login failed", error: error.message });
-
-  }
+} catch (error) {
+  console.log("Google Error", error.message, error.stack); // ye change kar
+  return res.status(500).json({ message: "Google login failed", error: error.message });
+}
 }
 //login with facebok
 export const facebookLogin = async (req, res) => {
