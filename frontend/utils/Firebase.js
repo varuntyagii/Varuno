@@ -15,6 +15,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+provider.addScope('email');      // ye add kar
+provider.addScope('profile');    // ye add kar
 const facebookProvider = new FacebookAuthProvider();
 const githubProvider = new GithubAuthProvider();
 const microsoftProvider = new OAuthProvider('microsoft.com');
