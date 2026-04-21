@@ -65,6 +65,7 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const idToken = await user.getIdToken();
+    console.log("Google user:", user.email, user.displayName); // ye add kar
 
       await axios.post(
         `${serverUrl}/api/auth/googleLogin`,
