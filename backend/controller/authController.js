@@ -273,15 +273,14 @@ export const logOut = async (req, res) => {
 
 export const googleLogin = async (req, res) => {
   try {
-    let { name, email, idToken  } = req.body
+    let { name, email } = req.body;
+
+    console.log("Received:", { name, email });
+
     if (!email) {
-      const decoded = await admin.auth().verifyIdToken(idToken);
-      email = decoded.email;
-      name = name || decoded.name;
+      return res.status(400).json({ message: "Email not received from Google" });
     }
-     if (!email) {
-      return res.status(400).json({ message: "Email not found from Google" });
-    }
+
     let user = await User.findOne({ email });
     if (!user) {
       user = await User.create({ name, email, isVerified: true });
@@ -290,8 +289,7 @@ export const googleLogin = async (req, res) => {
       await user.save();
     }
 
-
-    let token = await genToken(user._id)
+    let token = await genToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
@@ -302,10 +300,10 @@ export const googleLogin = async (req, res) => {
 
     return res.status(202).json({ message: "Google Login successfully", user, token });
 
-} catch (error) {
-  console.log("Google Error", error.message, error.stack); // ye change kar
-  return res.status(500).json({ message: "Google login failed", error: error.message });
-}
+  } catch (error) {
+    console.log("Google Error", error.message);
+    return res.status(500).json({ message: "Google login failed", error: error.message });
+  }
 }
 //login with facebok
 export const facebookLogin = async (req, res) => {
