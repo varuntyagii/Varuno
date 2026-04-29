@@ -100,56 +100,42 @@ const Login = () => {
 //     }
 //   };
 
-  const googleLogin = async () => {
+ const googleLogin = async () => {
   const loading = toast.loading("Signing in with Google...");
 
   try {
     const result = await signInWithPopup(auth, provider);
+
     const user = result.user;
 
-    const idToken = await user.getIdToken();
+    const email =
+      user.email ||
+      user.providerData?.find(p => p.email)?.email;
+
+    const name =
+      user.displayName ||
+      user.providerData?.find(p => p.displayName)?.displayName ||
+      email?.split("@")[0];
+
+    if (!email) {
+      toast.error("Google did not provide email");
+      return;
+    }
 
     await axios.post(
       `${serverUrl}/api/auth/googleLogin`,
-      {
-        credential: idToken, // 🔥 ONLY SEND TOKEN
-      },
+      { name, email },
       { withCredentials: true }
     );
 
     await getCurrentUser();
-
-    toast.success("Logged in with Google", { id: loading });
+    toast.success("Google login success", { id: loading });
     navigate("/");
   } catch (error) {
     toast.dismiss(loading);
-    toast.error("Google login failed", {
-      description: error.message,
-    });
+    toast.error("Google login failed");
   }
 };
-  // ─── Facebook ──────────────────────────────────────────────────────
-  const facebookLogin = async () => {
-    const loading = toast.loading("Signing in with Facebook...");
-    try {
-      const result = await signInWithPopup(auth, facebookProvider);
-      const user = result.user;
-      const idToken = await user.getIdToken();
-
-      await axios.post(
-        `${serverUrl}/api/auth/facebookLogin`,
-        { name: user.displayName, email: user.email, idToken },
-        { withCredentials: true }
-      );
-
-      await getCurrentUser();
-      toast.success("Logged in with Facebook", { id: loading });
-      navigate("/");
-    } catch (error) {
-      toast.dismiss(loading);
-      toast.error("Facebook login failed");
-    }
-  };
 
   // ─── GitHub ────────────────────────────────────────────────────────
   const githubLogin = async () => {
