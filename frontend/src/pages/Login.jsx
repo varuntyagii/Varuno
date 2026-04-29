@@ -99,13 +99,12 @@ const Login = () => {
 //       });
 //     }
 //   };
-
- const googleLogin = async () => {
+// ─── Google ────────────────────────────────────────────────────────
+const googleLogin = async () => {
   const loading = toast.loading("Signing in with Google...");
 
   try {
     const result = await signInWithPopup(auth, provider);
-
     const user = result.user;
 
     const email =
@@ -122,14 +121,21 @@ const Login = () => {
       return;
     }
 
+    const idToken = await user.getIdToken();
+
     await axios.post(
       `${serverUrl}/api/auth/googleLogin`,
-      { name, email },
+      {
+        name,
+        email,
+        idToken,
+      },
       { withCredentials: true }
     );
 
     await getCurrentUser();
-    toast.success("Google login success", { id: loading });
+
+    toast.success("Logged in with Google", { id: loading });
     navigate("/");
   } catch (error) {
     toast.dismiss(loading);
@@ -137,6 +143,49 @@ const Login = () => {
   }
 };
 
+  // ─── Facebook ──────────────────────────────────────────────────────
+const facebookLogin = async () => {
+  const loading = toast.loading("Signing in with Facebook...");
+
+  try {
+    const result = await signInWithPopup(auth, facebookProvider);
+    const user = result.user;
+
+    const email =
+      user.email ||
+      user.providerData?.find(p => p.email)?.email;
+
+    const name =
+      user.displayName ||
+      user.providerData?.find(p => p.displayName)?.displayName ||
+      email?.split("@")[0];
+
+    if (!email) {
+      toast.error("Facebook did not provide email");
+      return;
+    }
+
+    const idToken = await user.getIdToken();
+
+    await axios.post(
+      `${serverUrl}/api/auth/facebookLogin`,
+      {
+        name,
+        email,
+        idToken,
+      },
+      { withCredentials: true }
+    );
+
+    await getCurrentUser();
+
+    toast.success("Logged in with Facebook", { id: loading });
+    navigate("/");
+  } catch (error) {
+    toast.dismiss(loading);
+    toast.error("Facebook login failed");
+  }
+};
   // ─── GitHub ────────────────────────────────────────────────────────
   const githubLogin = async () => {
     const loading = toast.loading("Signing in with GitHub...");
