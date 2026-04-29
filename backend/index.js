@@ -66,11 +66,14 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// CORS
 app.use(
   cors({
-    origin: ["https://varuno-1.onrender.com", "https://admin-y1lw.onrender.com", "https://varuno.vercel.app"],
-    // origin:true,
+    origin: [
+      "https://varuno-1.onrender.com",
+      "https://admin-y1lw.onrender.com",
+      "https://varuno.vercel.app",
+      "https://varuno.qzz.io"
+    ],
     credentials: true,
   })
 );
