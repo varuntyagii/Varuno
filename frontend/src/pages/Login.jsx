@@ -58,42 +58,76 @@ const Login = () => {
     }
   };
 
-  // ─── Google ────────────────────────────────────────────────────────
-  const googleLogin = async () => {
-    const loading = toast.loading("Signing in with Google...");
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-          const email = user.email || user.providerData[0]?.email;  // fix
-      const name = user.displayName || user.providerData[0]?.displayName;  // fix
+//   // ─── Google ────────────────────────────────────────────────────────
+//   const googleLogin = async () => {
+//     const loading = toast.loading("Signing in with Google...");
+//     try {
+//       const result = await signInWithPopup(auth, provider);
+//       const user = result.user;
+//          const email =
+//   user.email ||
+//   user.providerData?.find(p => p.email)?.email;
+//       if (!email) {
+//   toast.error("Google did not provide email. Try another account.");
+//   return;
+// }
+//       const name = user.displayName || user.providerData[0]?.displayName;  // fix
       
-      const idToken = await user.getIdToken();
-    console.log("Google user:", user.email, user.displayName); // ye add kar
+//       const idToken = await user.getIdToken();
+//     console.log("Google user:", user.email, user.displayName); // ye add kar
 
-     await axios.post(
-  `${serverUrl}/api/auth/googleLogin`,
-  {
-    name: name,      // user.displayName ki jagah
-    email: email,    // user.email ki jagah
-  },
-  { withCredentials: true }
-);
+//      await axios.post(
+//   `${serverUrl}/api/auth/googleLogin`,
+//   {
+//     name: name,      // user.displayName ki jagah
+//     email: email,    // user.email ki jagah
+//   },
+//   { withCredentials: true }
+// );
 
-      await getCurrentUser();
-      toast.success("Logged in with Google", { id: loading });
-      navigate("/");
-    } catch (error) {
-      toast.dismiss(loading);
-      if (error.code === "auth/popup-closed-by-user") {
-        toast.info("Google login cancelled", { icon: "⚠️" });
-        return;
-      }
-      toast.error("Google login failed", {
-        description: error.message || "Something went wrong",
-      });
-    }
-  };
+//       await getCurrentUser();
+//       toast.success("Logged in with Google", { id: loading });
+//       navigate("/");
+//     } catch (error) {
+//       toast.dismiss(loading);
+//       if (error.code === "auth/popup-closed-by-user") {
+//         toast.info("Google login cancelled", { icon: "⚠️" });
+//         return;
+//       }
+//       toast.error("Google login failed", {
+//         description: error.message || "Something went wrong",
+//       });
+//     }
+//   };
 
+  const googleLogin = async () => {
+  const loading = toast.loading("Signing in with Google...");
+
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    const idToken = await user.getIdToken();
+
+    await axios.post(
+      `${serverUrl}/api/auth/googleLogin`,
+      {
+        credential: idToken, // 🔥 ONLY SEND TOKEN
+      },
+      { withCredentials: true }
+    );
+
+    await getCurrentUser();
+
+    toast.success("Logged in with Google", { id: loading });
+    navigate("/");
+  } catch (error) {
+    toast.dismiss(loading);
+    toast.error("Google login failed", {
+      description: error.message,
+    });
+  }
+};
   // ─── Facebook ──────────────────────────────────────────────────────
   const facebookLogin = async () => {
     const loading = toast.loading("Signing in with Facebook...");
